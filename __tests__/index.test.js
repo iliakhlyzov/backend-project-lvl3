@@ -15,6 +15,8 @@ import pageLoader from '../index.js';
   после всего мы удаляем директорию и файлы
 */
 
+nock.disableNetConnect();
+
 const baseUrl = 'https://ru.hexlet.io';
 const page = '/courses';
 const expectedData = 'data from ya.ru';
@@ -22,12 +24,11 @@ const expectedFilename = 'ru-hexlet-io-courses.html';
 
 let tmpDirPath = '';
 
-// const readFile = (dirpath, filename) => fs.readFile(path.resolve(dirpath, filename), 'utf-8');
+const readFile = (dirpath, filename) => fs.readFile(path.resolve(dirpath, filename), 'utf-8');
 const existsFile = async (dirpath, filename) => fs.readdir(dirpath)
   .then((filenames) => filenames.includes(filename));
 
 beforeEach(async () => {
-  nock.disableNetConnect();
   tmpDirPath = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-')); // перехватывание всех запросов на эту страницу
 });
 
@@ -38,14 +39,15 @@ afterAll(async () => {
 
 test('tmpdir', async () => {
   const isFileExistsBefore = await existsFile(tmpDirPath, expectedFilename);
+  console.log(await existsFile(tmpDirPath, expectedFilename));
   expect(isFileExistsBefore).toBeFalsy();
 
   nock(baseUrl).get(page).reply(200, expectedData);
-  pageLoader(`${baseUrl}${page}`, tmpDirPath);
-  // console.log(await fs.readdir(tmpDirPath));
-  // const isFileExistsAfter = await existsFile(tmpDirPath, expectedFilename);
-  // expect(isFileExistsAfter).toBeTruthy();
+  await pageLoader(`${baseUrl}${page}`, tmpDirPath);
 
-  // const data = await readFile(tmpDirPath, expectedFilename);
-  // expect(data).toEqual(expectedData);
+  const isFileExistsAfter = await existsFile(tmpDirPath, expectedFilename);
+  expect(isFileExistsAfter).toBeTruthy();
+
+  const data = await readFile(tmpDirPath, expectedFilename);
+  expect(data).toEqual(expectedData);
 });

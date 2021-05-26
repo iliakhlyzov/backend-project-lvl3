@@ -9,7 +9,7 @@ program
   .description('Page loader utility.')
   .option('-o, --output [dir]', process.cwd())
   .arguments('<url>')
-  .action((url) => {
-    pageLoader(url, program.output);
+  .action(async (url) => {
+    await pageLoader(url, program.opts().output);
   })
   .parse();

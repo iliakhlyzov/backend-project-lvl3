@@ -7,6 +7,11 @@
   "scripts": {
     "test": "npx jest"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "testRunner": "jest-circus/runner"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iliakhlyzov/backend-project-lvl3.git"
@@ -18,7 +23,7 @@
   },
   "homepage": "https://github.com/iliakhlyzov/backend-project-lvl3#readme",
   "bin": {
-    "pageLoader": "./bin/index.js"
+    "page-loader": "./bin/index.js"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
@@ -26,6 +31,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.6",
     "jest": "^26.6.3",
+    "jest-circus": "^27.0.1",
     "nock": "^13.0.11"
   },
   "dependencies": {

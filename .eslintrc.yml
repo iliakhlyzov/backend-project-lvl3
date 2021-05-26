@@ -1,9 +1,15 @@
+---
+
+plugins:
+  # https://github.com/jest-community/eslint-plugin-jest
+  - jest
 env:
   browser: true
   es2021: true
   jest: true
 extends:
   - airbnb-base
+  - 'plugin:jest/recommended'
 parserOptions:
   ecmaVersion: 2021
   sourceType: module
