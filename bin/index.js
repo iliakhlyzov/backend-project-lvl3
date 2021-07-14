@@ -7,9 +7,9 @@ import pageLoader from '../index.js';
 program
   .version('0.0.1')
   .description('Page loader utility.')
-  .option('-o, --output [dir]', process.cwd())
+  .option('-o, --output [dir]', 'output path', process.cwd())
   .arguments('<url>')
-  .action(async (url) => {
-    await pageLoader(url, program.opts().output);
+  .action((url) => {
+    pageLoader(url, program.opts().output);
   })
-  .parse();
+  .parse(process.argv);

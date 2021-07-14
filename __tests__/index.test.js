@@ -17,10 +17,14 @@ import pageLoader from '../index.js';
 
 nock.disableNetConnect();
 
-const baseUrl = 'https://ru.hexlet.io';
+const base = 'https://ru.hexlet.io';
 const page = '/courses';
 const expectedData = 'data from ya.ru';
 const expectedFilename = 'ru-hexlet-io-courses.html';
+
+const pageAssetsDirname = 'ru-hexlet-io-courses_files';
+const pageFilename = 'ru-hexlet-io-courses.html';
+const pageUrl = new URL(page, base);
 
 let tmpDirPath = '';
 
@@ -39,11 +43,10 @@ afterAll(async () => {
 
 test('tmpdir', async () => {
   const isFileExistsBefore = await existsFile(tmpDirPath, expectedFilename);
-  console.log(await existsFile(tmpDirPath, expectedFilename));
   expect(isFileExistsBefore).toBeFalsy();
 
-  nock(baseUrl).get(page).reply(200, expectedData);
-  await pageLoader(`${baseUrl}${page}`, tmpDirPath);
+  nock(base).get(page).reply(200, expectedData);
+  await pageLoader(`${base}${page}`, tmpDirPath);
 
   const isFileExistsAfter = await existsFile(tmpDirPath, expectedFilename);
   expect(isFileExistsAfter).toBeTruthy();
